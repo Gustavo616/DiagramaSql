@@ -106,13 +106,47 @@ CREATE TABLE Produto_has_Marca_has_Venda (
    Produto_has_Marca_Marca_idMarca integer not null,
    Produto_has_Marca_Produto_idMarca integer not null,
    preco_venda_produto real      not null,
+   quantidade        integer     not null,
    preco_total_produto_venda real not null,
    foreign key (Venda_idVenda)
    REFERENCES Venda (idVenda),
    foreign key (Produto_has_Marca_idProdutoMarca)
-   REFERENCES Produto_has_Marca (idProdutoMarca),
-   foreign key (Produto_has_Marca_Marca_idMarca)
-   REFERENCES Produto_has_Marca (Marca_idMarca),
-   foreign key (Produto_has_Marca_Produto_idMarca)
-   REFERENCES Produto_has_Marca (Produto_idMarca)
+   REFERENCES Produto_has_Marca (idProdutoMarca)
 );
+
+CREATE TABLE Estoque (
+  idEstoque integer  PRIMARY KEY not null,
+   Produto_has_Marca_idProdutoMarca integer not null,
+   Produto_has_Marca_Marca_idMarca integer not null,
+   Produto_has_Marca_Produto_idMarca integer not null,  
+   Qtd_Inicial       integer     not null,
+   Qtd_Minima        integer     not null,
+   Qtd_Atual         integer     not null,
+   foreign key (Produto_has_Marca_idProdutoMarca)
+   REFERENCES Produto_has_Marca (idProdutoMarca)
+);
+
+CREATE TABLE Produto_has_Marca_has_Fornecedor (
+   Fonecedor_idFonecedor integer primary key not null,
+   Produto_has_Marca_idProdutoMarca integer not null,
+   Produto_has_Marca_Marca_idMarca integer not null,
+   Produto_has_Marca_Produto_idMarca integer not null,  
+   Precocusto        real        not null,
+   foreign key (Produto_has_Marca_idProdutoMarca)
+   REFERENCES Produto_has_Marca (idProdutoMarca),
+   foreign key (Fonecedor_idFonecedor)
+   REFERENCES Fonecedor (idFonecedor)
+);
+
+CREATE TABLE Compra_has_Produto_has_Marca_has_Fornecedor (
+   Compra_idCompra   integer     not null,
+   Produto_has_Marca_has_Fornecedor_Fonecedor_idFonecedor integer not null,
+   Produto_has_Marca_has_Fornecedor_Produto_has_Marca_idProdutoMarca integer not null,
+   Produto_has_Marca_has_Fornecedor_Produto_has_Marca_Marca_idMarca integer not null,
+   Produto_has_Marca_has_Fornecedor_Produto_has_Marca_Produto_idMarca integer not null,  
+   foreign key (Compra_idCompra)
+   REFERENCES Compra (idCompra),
+   foreign key (Produto_has_Marca_has_Fornecedor_Fonecedor_idFonecedor)
+   REFERENCES Produto_has_Marca_has_Fornecedor (Fonecedor_idFonecedor)
+);
+
